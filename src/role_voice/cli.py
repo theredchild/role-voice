@@ -52,9 +52,16 @@ def run(
         Optional[str],
         typer.Option("--engine", "-e", help="STT engine: auto, mlx, faster-whisper."),
     ] = None,
+    model: Annotated[
+        Optional[str],
+        typer.Option("--model", "-m", help="STT model name/size."),
+    ] = None,
 ) -> None:
     """Start the push-to-talk voice interface."""
-    config = load_config(config_path)
+    config, config_used = load_config(config_path)
+
+    if config_used:
+        console.print(f"[dim]Config: {config_used}[/]")
 
     if target:
         config.target.type = target
@@ -62,6 +69,8 @@ def run(
         config.hotkey.push_to_talk = hotkey
     if engine:
         config.stt.engine = engine
+    if model:
+        config.stt.model = model
 
     from role_voice.app import RoleVoiceApp
 
@@ -106,7 +115,11 @@ def config(
     ] = None,
 ) -> None:
     """Show current configuration."""
-    cfg = load_config(config_path)
+    cfg, config_used = load_config(config_path)
+    if config_used:
+        console.print(f"[dim]Loaded from: {config_used}[/]\n")
+    else:
+        console.print("[dim]Using built-in defaults[/]\n")
     console.print_json(cfg.model_dump_json(indent=2))
 
 

@@ -52,15 +52,40 @@ class AppConfig(BaseModel):
     ui: UIConfig = Field(default_factory=UIConfig)
 
 
-DEFAULT_CONFIG_PATH = Path.home() / ".config" / "role-voice" / "config.yaml"
+LOCAL_CONFIG_PATH = Path("config.yaml")
+USER_CONFIG_PATH = Path.home() / ".config" / "role-voice" / "config.yaml"
 
 
-def load_config(path: Path | None = None) -> AppConfig:
-    """Load config from YAML file, falling back to defaults."""
-    if path is None:
-        path = DEFAULT_CONFIG_PATH
-    if path.exists():
-        with open(path) as f:
+def load_config(path: Path | None = None) -> tuple[AppConfig, Path | None]:
+    """Load config from YAML file.
+
+    Search order:
+    1. Explicit path (if provided)
+    2. ./config.yaml (project directory)
+    3. ~/.config/role-voice/config.yaml (user global)
+    4. Built-in defaults
+
+    Returns:
+        Tuple of (config, path_used) where path_used is None if using defaults.
+    """
+    if path is not None:
+        if path.exists():
+            with open(path) as f:
+                data = yaml.safe_load(f) or {}
+            return AppConfig(**data), path
+        return AppConfig(), None
+
+    # Check project directory first
+    if LOCAL_CONFIG_PATH.exists():
+        with open(LOCAL_CONFIG_PATH) as f:
             data = yaml.safe_load(f) or {}
-        return AppConfig(**data)
-    return AppConfig()
+        return AppConfig(**data), LOCAL_CONFIG_PATH
+
+    # Then user global config
+    if USER_CONFIG_PATH.exists():
+        with open(USER_CONFIG_PATH) as f:
+            data = yaml.safe_load(f) or {}
+        return AppConfig(**data), USER_CONFIG_PATH
+
+    # Fall back to defaults
+    return AppConfig(), None

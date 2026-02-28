@@ -29,10 +29,12 @@ class TestAppConfig:
 
 class TestLoadConfig:
     def test_load_from_file(self, tmp_config_file: Path) -> None:
-        config = load_config(tmp_config_file)
+        config, path_used = load_config(tmp_config_file)
         assert config.audio.sample_rate == 16000
         assert config.target.type == "clipboard"
+        assert path_used == tmp_config_file
 
     def test_load_nonexistent_returns_defaults(self, tmp_path: Path) -> None:
-        config = load_config(tmp_path / "nonexistent.yaml")
+        config, path_used = load_config(tmp_path / "nonexistent.yaml")
         assert config == AppConfig()
+        assert path_used is None

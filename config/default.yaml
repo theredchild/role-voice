@@ -1,5 +1,5 @@
 # role-voice configuration
-# Copy to ~/.config/role-voice/config.yaml to customize
+# Place as ./config.yaml in project directory, or ~/.config/role-voice/config.yaml for global settings
 
 audio:
   sample_rate: 16000        # Hz - Whisper expects 16kHz
