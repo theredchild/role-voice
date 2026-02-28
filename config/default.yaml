@@ -1,0 +1,37 @@
+# role-voice configuration
+# Copy to ~/.config/role-voice/config.yaml to customize
+
+audio:
+  sample_rate: 16000        # Hz - Whisper expects 16kHz
+  channels: 1               # mono
+  block_size: 1024           # samples per callback (~64ms at 16kHz)
+  device: null               # null = system default, or device index/name
+
+vad:
+  enabled: true              # trim silence before transcription
+  threshold: 0.5             # speech probability threshold (0.0-1.0)
+  min_speech_duration_ms: 250
+  min_silence_duration_ms: 100
+
+stt:
+  engine: auto               # "auto", "mlx", or "faster-whisper"
+  model: mlx-community/whisper-turbo
+  language: en               # null for auto-detect, "en" for English-only (faster)
+  device: cpu                # faster-whisper only: "cpu" or "cuda"
+  compute_type: int8         # faster-whisper only: "int8", "float16", "float32"
+
+hotkey:
+  push_to_talk: "<ctrl>+<shift>"
+  # Examples:
+  #   "<cmd>+<shift>"          - Cmd+Shift (macOS)
+  #   "<ctrl>+<space>"         - Ctrl+Space
+  #   "<f13>"                  - F13 (dedicated mic key)
+
+target:
+  type: clipboard            # "clipboard", "claude-code", "terminal"
+  auto_execute: false        # terminal only: press Enter after paste
+  claude_args: []            # extra args for claude CLI
+
+ui:
+  show_transcription: true
+  show_timing: true

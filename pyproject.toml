@@ -1,0 +1,79 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "role-voice"
+version = "0.1.0"
+description = "Local push-to-talk voice interface for coding agents"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+authors = [{ name = "Harsh Parekh" }]
+keywords = ["voice", "stt", "whisper", "coding", "cli", "push-to-talk"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
+
+dependencies = [
+    "sounddevice>=0.4.6",
+    "numpy>=1.26",
+    "pynput>=1.7.6",
+    "pyyaml>=6.0",
+    "pydantic>=2.0",
+    "typer>=0.9",
+    "rich>=13.0",
+]
+
+[project.optional-dependencies]
+mlx = [
+    "mlx-whisper>=0.4",
+]
+faster-whisper = [
+    "faster-whisper>=1.0",
+]
+vad = [
+    "silero-vad>=5.0",
+    "torch>=2.0",
+    "soxr>=0.3",
+]
+all = [
+    "role-voice[mlx,vad]",
+]
+dev = [
+    "role-voice[all]",
+    "pytest>=8.0",
+    "pytest-cov>=4.0",
+    "ruff>=0.4",
+    "mypy>=1.10",
+    "pre-commit>=3.0",
+]
+
+[project.scripts]
+role-voice = "role_voice.cli:app"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "slow: marks tests that require model loading",
+    "hardware: marks tests that require a microphone",
+]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
