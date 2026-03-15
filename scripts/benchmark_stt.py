@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Benchmark STT engine latency with various audio durations."""
+
 from __future__ import annotations
 
 import time

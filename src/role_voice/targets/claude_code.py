@@ -13,10 +13,7 @@ class ClaudeCodeDispatcher(TargetDispatcher):
         self._extra_args = extra_args or []
         self._claude_path = shutil.which("claude")
         if not self._claude_path:
-            raise RuntimeError(
-                "Claude Code CLI not found in PATH. "
-                "Install it from https://claude.ai/code"
-            )
+            raise RuntimeError("Claude Code CLI not found in PATH. Install it from https://claude.ai/code")
 
     def dispatch(self, text: str) -> None:
         cmd = [self._claude_path, "-p", *self._extra_args, text]

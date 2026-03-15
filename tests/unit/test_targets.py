@@ -22,9 +22,7 @@ class TestClipboardDispatcher:
 
         dispatcher = ClipboardDispatcher()
         dispatcher.dispatch("hello world")
-        mock_subprocess.run.assert_called_once_with(
-            ["pbcopy"], input=b"hello world", check=True
-        )
+        mock_subprocess.run.assert_called_once_with(["pbcopy"], input=b"hello world", check=True)
 
 
 class TestTerminalDispatcher:
@@ -46,9 +44,7 @@ class TestTerminalDispatcher:
 
         dispatcher = TerminalDispatcher(auto_execute=False)
         dispatcher.dispatch("test command")
-        mock_subprocess.run.assert_called_once_with(
-            ["xdotool", "type", "--delay", "0", "test command"], check=True
-        )
+        mock_subprocess.run.assert_called_once_with(["xdotool", "type", "--delay", "0", "test command"], check=True)
 
 
 class TestClaudeCodeDispatcher:

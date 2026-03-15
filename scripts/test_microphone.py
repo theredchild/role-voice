@@ -4,6 +4,7 @@
 Records 3 seconds of audio, shows the waveform stats, and optionally plays it back.
 Usage: python scripts/test_microphone.py [--playback]
 """
+
 from __future__ import annotations
 
 import sys
@@ -27,7 +28,7 @@ def main() -> None:
     peak = np.max(np.abs(audio))
     rms = np.sqrt(np.mean(audio**2))
 
-    print(f"\nResults:")
+    print("\nResults:")
     print(f"  Samples: {len(audio)}")
     print(f"  Duration: {len(audio) / sample_rate:.1f}s")
     print(f"  Peak amplitude: {peak:.4f}")

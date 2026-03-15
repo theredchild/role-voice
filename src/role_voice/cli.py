@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Annotated, Optional
+from typing import Annotated
 
 import typer
 from rich.console import Console
@@ -27,7 +27,7 @@ def version_callback(value: bool) -> None:
 @app.callback()
 def main(
     version: Annotated[
-        Optional[bool],
+        bool | None,
         typer.Option("--version", "-v", callback=version_callback, is_eager=True, help="Show version."),
     ] = None,
 ) -> None:
@@ -37,23 +37,23 @@ def main(
 @app.command()
 def run(
     config_path: Annotated[
-        Optional[Path],
+        Path | None,
         typer.Option("--config", "-c", help="Path to config YAML file."),
     ] = None,
     target: Annotated[
-        Optional[str],
+        str | None,
         typer.Option("--target", "-t", help="Target: clipboard, claude-code, terminal."),
     ] = None,
     hotkey: Annotated[
-        Optional[str],
+        str | None,
         typer.Option("--hotkey", "-k", help="Push-to-talk hotkey (pynput format)."),
     ] = None,
     engine: Annotated[
-        Optional[str],
+        str | None,
         typer.Option("--engine", "-e", help="STT engine: auto, mlx, faster-whisper."),
     ] = None,
     model: Annotated[
-        Optional[str],
+        str | None,
         typer.Option("--model", "-m", help="STT model name/size."),
     ] = None,
 ) -> None:
@@ -110,7 +110,7 @@ def devices() -> None:
 @app.command()
 def config(
     config_path: Annotated[
-        Optional[Path],
+        Path | None,
         typer.Option("--config", "-c", help="Path to config YAML file."),
     ] = None,
 ) -> None:
@@ -126,7 +126,7 @@ def config(
 @app.command()
 def benchmark(
     engine: Annotated[
-        Optional[str],
+        str | None,
         typer.Option("--engine", "-e", help="STT engine to benchmark."),
     ] = None,
     duration: Annotated[
